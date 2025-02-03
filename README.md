@@ -7,14 +7,16 @@
  #### Electron
  so it actually uses electron
  #### Electronmon
- installed via npx command toa void ahving to restart app after every change
+ used via npx command to avoid having to restart app after every change
  #### resize-img
- not explained in tutorial but a codebase for resizing images
+ A codebase for reszing images, as making one ourselves was outside the scope of tutorial instead tutorial was focused on making an app that allowed easy interaction with this codebase.
  ### Note
  the CSS and html has been fetched from an online source as the creator of the course felt it wasn't necissary to go through during the course
 
 
  ## Processes
+ ### preloader
+ we need access to path.join, Toastify.toast and os.homedir in renderer but renderer will not allow this, so we created a preloader with contextbridges to expose both functions to renderer as explained here https://www.electronjs.org/docs/latest/tutorial/tutorial-preload
  ### Render
   As mentioned above most of the renderer process html and css was copied from tutorial gitHub repository as it was outside of the scope of the course
   the exception to tbis was renderer.js as it was considered relevant to the course and made as a part of it.

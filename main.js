@@ -1,15 +1,27 @@
 const path = require('path');
-const { app, BrowserWindow, Menu } = require('electron');
+const os = require('os');
+const fs = require('fs');
+const resizeImag = require('resize-img')
+const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
 
 const isMac = process.platform === 'darwin';
-const isDev = process.env.NODE_ENV !== 'development';
+const isDev = process.env.NODE_ENV !== 'production';
+
+let mainWindow
 
 // create main window
 function createMainWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     title: 'Image Resizer',
     width: isDev? 1000 : 500,
     height: 600,
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js')
+      /* normally 'preload: path.join(__dirname, 'preload.js')' should be enough but according to tutorial using Node means that 
+      'contextIsolation: true' and 'nodeIntegration: true' are needed aswell*/
+    }
   })
   //Open devtools if in dev env
   if (isDev) {
@@ -37,6 +49,9 @@ app.whenReady().then(() => {
   const mainMenu = Menu.buildFromTemplate(menu);
   Menu.setApplicationMenu(mainMenu);
 
+  // remove mainWindow from memory on close
+  mainWindow.on('closed', () => (mainWindow = null));
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createMainWindow()
@@ -46,37 +61,73 @@ app.whenReady().then(() => {
 
 //Menu template
 const menu = [
-      ...(isMac ? [{
-        label: app.name,
-        submenu: [
-          {
-            label: 'About',
-            click: createAboutWindow
-          }
-        ]
-      }] :[]),
+  ...(isMac ? [{
+    label: app.name,
+    submenu: [
       {
-        role: 'fileMenu'
-      /*
-      we can make our own like the following but fileMenu does most of the work for us
-        label: 'Quit',
-        click: () => app.quit(),
-        accelerator: 'CmdOrCtrl+W' 
-        */
-      },
-      ...(!isMac ? [
-        {
-          label: 'Help',
-          submenu: [
-            {
-              label: 'About',
-              click: createAboutWindow
-            }
-          ]
-        }
-      ] : [])
+        label: 'About',
+        click: createAboutWindow
+      }
     ]
+  }] : []),
+  {
+    role: 'fileMenu'
+    /*
+    we can make our own like the following but fileMenu does most of the work for us
+      label: 'Quit',
+      click: () => app.quit(),
+      accelerator: 'CmdOrCtrl+W' 
+      */
+  },
+  ...(!isMac ? [
+    {
+      label: 'Help',
+      submenu: [
+        {
+          label: 'About',
+          click: createAboutWindow
+        }
+      ]
+    }
+  ] : [])
+];
 
+//Respond to IPCrenderer resize
+ipcMain.on('image:resize', (e, options) => {
+  options.dest = path.join(os.homedir(), 'imageresizer')
+  console.log(options);
+  resizeImage(options);
+});
+
+// resize the image
+async function resizeImage({ imgPath, width, height, dest }) {
+  try {
+    const newPath = await resizeImag(fs.readFileSync(imgPath, {
+      width: +width,
+      height: +height
+    }));
+
+    // Create filename
+    const filename = path.basename(imgPath);
+
+    // create destination folder if it doesn't exist
+    if (!fs.existsSync(dest)) {
+      fs.mkdirSync(dest);
+    }
+
+    //write file to dest
+    fs.writeFileSync(path.join(dest, filename), newPath);
+
+    //send a succees to renderer
+    mainWindow.webContents.send('image:done')
+
+    // open dest folder
+    shell.openPath(dest);
+
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 app.on('window-all-closed', () => {
   if (!isMac) {
