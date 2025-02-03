@@ -1,0 +1,17 @@
+{
+  "name": "imageresizerelectroncourse",
+  "productName": "Image Resizer",
+  "version": "1.0.0",
+  "description": "Course to learn electron by making a image resizer app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "AccidentByDragon",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^34.0.2",
+    "resize-img": "^2.0.0",
+    "toastify-js": "^1.12.0"
+  }
+}
