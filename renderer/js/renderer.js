@@ -58,7 +58,7 @@ function resizeImage(e) {
   const imgPath = img.files[0].path;
   const width = widthInput.value;
   const height = heightInput.value;
-  console.log(imgPath)
+  console.log(imgPath) // the imgPath is undefined here why? imgPath = img.files[0].path should fill it but doesn't
 
   // send to main via IPC renderer
   ipcRenderer.send('image:resize', {
