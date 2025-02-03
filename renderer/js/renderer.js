@@ -58,6 +58,7 @@ function resizeImage(e) {
   const imgPath = img.files[0].path;
   const width = widthInput.value;
   const height = heightInput.value;
+  console.log(imgPath)
 
   // send to main via IPC renderer
   ipcRenderer.send('image:resize', {

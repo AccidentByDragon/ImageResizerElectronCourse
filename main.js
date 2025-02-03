@@ -101,11 +101,11 @@ ipcMain.on('image:resize', (e, options) => {
 
 // resize the image
 async function resizeImage({ imgPath, width, height, dest }) {
-  try {
-    const newPath = await resizeImag(fs.readFileSync(imgPath, {
+  try {    
+    const newPath = await resizeImag(fs.readFileSync(imgPath), {
       width: +width,
-      height: +height
-    }));
+      height: +height,
+    });
 
     // Create filename
     const filename = path.basename(imgPath);
