@@ -20,18 +20,19 @@ function loadImage(e) {
     alertError('File is not an image, please select an image')
     //replace with alert later
     return;
-  }
+  };
+
   // get original dimensions
   const image = new Image();
   image.src = URL.createObjectURL(file);
-  image.onload = function(){
+  image.onload = function () {
     widthInput.value = this.width;
     heightInput.value = this.height;
-  }
+  };
 
   // form 
   form.style.display = 'block';
-  filename.innerHTML = file.name;
+  filename.innerHTML = img.files[0].name;
   outputPath.innerText = path.join(os.homedir(), 'imageresizer');
 }
 
