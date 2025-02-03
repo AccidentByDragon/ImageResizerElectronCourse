@@ -19,6 +19,8 @@
   As mentioned above most of the renderer process html and css was copied from tutorial gitHub repository as it was outside of the scope of the course
   the exception to tbis was renderer.js as it was considered relevant to the course and made as a part of it.
   #### renderer.js
+  #### loadImage
+  we used an event listener, with this we can more easily target the image via e.target.files
 ### Main
   #### Main js
   ##### Boilerplate Code
