@@ -55,7 +55,7 @@ function resizeImage(e) {
     alertError('Please fill in a height and width');
     return;
   }
-  const imgPath = img.files[0].path; //img.files[0].name; is suggested by ChatGPT but is just idiotic as it gives the name which is useless
+  let imgPath = img.files[0].path; //img.files[0].name; is suggested by ChatGPT but is just idiotic as it gives the name which is useless
   const width = widthInput.value;
   const height = heightInput.value;
   console.log(imgPath) // the imgPath is undefined here why? imgPath = img.files[0].path should fill it but doesn't
