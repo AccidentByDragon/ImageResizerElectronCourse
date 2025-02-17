@@ -1,5 +1,6 @@
 {
     "src": "tests",
     "electronPath": "C:/Users/Karl1/Documents/GitHubProjekt/ImageResizerElectronCOurse>",
-    "mainWindowUrl": "./index.html"
+    "mainWindowUrl": "./index.html",
+    "appArgs": "--no-sandbox"
 }
