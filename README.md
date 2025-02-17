@@ -55,3 +55,8 @@
   as this is a promise function it has to be an async function. before sending a message to renderer
   ###### Menu 
   the menu consists of a exit and about function, wand includes functionality to open an about window and exit program when the menu options are pressed.
+### Testing with Testcafe
+#### Running the tests
+  the command to run the tests is the following:
+    "npx testcafe "electron:./main.js" tests/electronTest.js"
+#### Tests Performed
