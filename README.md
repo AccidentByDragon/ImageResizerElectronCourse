@@ -18,6 +18,7 @@ currently the app is hard coded to only accept images that are in the "Documents
 ### Previous Issues
 #### Errors with IMGpath in Renderer.js
 for some reason IMGpath is becoming undefined despite it being identical to the tutorial code, attempted to fix it with AI prompts, the prompts used were: prompts:  1: "imgPath is becoming undefined, how can i make it correctly show the file path" followed by the code, prompt 2: "how can i construct the path with name?", prompt 3: "that didn't work, is there another way?", prompt 4: "this the following error: Error: ENOENT: no such file or directory"; It is worth noting that the tutorial is 2 years old so it is possible there has been a chnage in Electron that means it no longer works, tutorial itself has given no answers on why it is occuring.
+This was resolved and found to due to Electron changes making path inaccesible in renderer.js
  ## Processes
  ### preloader
  we need access to path.join, Toastify.toast and os.homedir in renderer but renderer will not allow this, so we created a preloader with contextbridges to expose both functions to renderer as explained here https://www.electronjs.org/docs/latest/tutorial/tutorial-preload
