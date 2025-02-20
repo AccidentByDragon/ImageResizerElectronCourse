@@ -98,7 +98,7 @@ ipcMain.on('image:resize', (e, options) => {
 
   // Ensure `imgPath` is set
   if (!options.imgPath) {
-    options.imgPath = path.join(os.homedir(), 'Downloads', options.fileName); // Change this to the actual upload directory
+    options.imgPath = path.join(os.homedir(), 'Documents', options.fileName); // Change this to the actual upload directory
   }
 
   options.dest = path.join(os.homedir(), 'imageresizer');
