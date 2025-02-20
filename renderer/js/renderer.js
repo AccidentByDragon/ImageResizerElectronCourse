@@ -51,21 +51,23 @@ function resizeImage(e) {
     return;
   }
 
-  if (widthInput === '' || heightInput === '') {
+  if (!widthInput.value || !heightInput.value) {
     alertError('Please fill in a height and width');
     return;
   }
-  const imgFile = img.files[0];
-  //let imgPath = img.files[0].path; according to ChatGPT this is no longer functional and insted needs to be handled in Main
-  const width = widthInput.value;
-  const height = heightInput.value;
-  console.log(imgFile) // the imgPath is undefined here why? imgPath = img.files[0].path should fill it but doesn't
 
-  // send to main via IPC renderer
+  const file = img.files[0];
+
+  console.log('Selected file:', file); // Debugging output
+
+  // Ensure `file.path` is printed in case Electron allows it
+  console.log('File path:', file.path);
+
   ipcRenderer.send('image:resize', {
-    imgName: imgFile.name,
-    width,
-    height
+    imgPath: file.path,  // This might be undefined due to Electron security
+    fileName: file.name,
+    width: widthInput.value,
+    height: heightInput.value
   });
 }
 

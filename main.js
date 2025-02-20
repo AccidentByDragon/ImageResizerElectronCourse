@@ -94,10 +94,18 @@ const menu = [
 
 //Respond to IPCrenderer resize
 ipcMain.on('image:resize', (e, options) => {
-  // Resolve the full image path inside the main process
-  options.imgPath = path.join(os.homedir(), 'Downloads', options.fileName); // Adjust this as needed
+  console.log('Received resize request:', options); // Debugging
+
+  // Ensure `imgPath` is set
+  if (!options.imgPath) {
+    options.imgPath = path.join(os.homedir(), 'Downloads', options.fileName); // Change this to the actual upload directory
+  }
+
   options.dest = path.join(os.homedir(), 'imageresizer');
-  console.log(options);
+
+  console.log('Final image path:', options.imgPath); // Debugging
+  console.log('Destination folder:', options.dest);
+
   resizeImage(options);
 });
 
