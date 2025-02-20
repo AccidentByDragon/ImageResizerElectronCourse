@@ -55,14 +55,15 @@ function resizeImage(e) {
     alertError('Please fill in a height and width');
     return;
   }
-  let imgPath = img.files[0].path; //img.files[0].name; is suggested by ChatGPT but is just idiotic as it gives the name which is useless
+  const imgFile = img.files[0];
+  //let imgPath = img.files[0].path; according to ChatGPT this is no longer functional and insted needs to be handled in Main
   const width = widthInput.value;
   const height = heightInput.value;
-  console.log(imgPath) // the imgPath is undefined here why? imgPath = img.files[0].path should fill it but doesn't
+  console.log(imgFile) // the imgPath is undefined here why? imgPath = img.files[0].path should fill it but doesn't
 
   // send to main via IPC renderer
   ipcRenderer.send('image:resize', {
-    imgPath,
+    imgName: imgFile.name,
     width,
     height
   });

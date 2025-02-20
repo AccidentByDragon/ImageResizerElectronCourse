@@ -94,7 +94,9 @@ const menu = [
 
 //Respond to IPCrenderer resize
 ipcMain.on('image:resize', (e, options) => {
-  options.dest = path.join(os.homedir(), 'imageresizer')
+  // Resolve the full image path inside the main process
+  options.imgPath = path.join(os.homedir(), 'Downloads', options.fileName); // Adjust this as needed
+  options.dest = path.join(os.homedir(), 'imageresizer');
   console.log(options);
   resizeImage(options);
 });
